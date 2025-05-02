@@ -1,0 +1,50 @@
+﻿<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.4/css/bootstrap.css">
+<div class="container">
+    <div class="login-form col-md-4 offset-md-4">
+        <h2 class="title">Authentification</h2>
+        @model Btob.Models.LogOnModel
+        @using (Html.BeginForm("Logpost", "Login", FormMethod.Post))
+        {
+            <div class="form-group">
+                <label >Utilisateur</label>
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", required = "required" , placeholder = "Nom d'utilisateur" })
+
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", Type = "password", required = "required", placeholder = "Mot de passe" })
+            </div>
+           
+            <div class="form-group">
+                <label class="error" href="#">@Request.Cookies["msgErreur"].Value</label>
+            </div>
+            <button class="btn btn-primary btn-block btn-group">Se Connecter</button>
+        }
+    </div>
+</div>
+<style type="text/css">
+    body {
+        background-image: url("images/img3.jpg");
+        background-size: cover;
+    }
+
+  
+
+    .Login-form {
+        margin-top: 60px;
+        box-shadow: 0px 0px 10px 1px grey;
+        border-radius: 5px;
+        padding-bottom: 20px;
+        background: white;
+    }
+
+    .title {
+        background: #007bbf;
+        padding: 10px;
+        text-align: center;
+        color: #fff;
+        border-radius: 0px 0px 10px 10px;
+    }
+
+    }
+</style>

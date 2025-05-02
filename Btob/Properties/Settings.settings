@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Btob.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Btob_Sales_Service_RC" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://25.77.167.162:8090/service_rc.asmx</Value>
+    </Setting>
+    <Setting Name="Btob_PortailWeb_PortailWeb" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://desktop-47nbubl:7047/BC252/WS/CRONUS%20France%20S.A./Codeunit/PortailWeb</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

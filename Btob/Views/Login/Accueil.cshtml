@@ -1,0 +1,684 @@
+﻿@{
+    Layout = "~/Views/Shared/Panier_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>@ViewBag.Nom</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        #resultsContainer {
+            transition: all 0.3s ease;
+            padding-top: 30px;
+        }
+
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .product-item {
+            display: flex;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+        }
+
+            .product-item:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+
+        .product-image {
+            width: 200px;
+            min-width: 200px;
+            height: 150px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .product-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .product-content {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-right: 15px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2a5885;
+            white-space: nowrap;
+        }
+
+        .product-description {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .product-meta {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-ref {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .stock-status {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .stock-available {
+            color: #28a745;
+        }
+
+        .stock-out {
+            color: #dc3545;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-details {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+            .btn-details:hover {
+                background: #e9ecef;
+            }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .no-results-icon {
+            font-size: 50px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .navbar {
+            background: #007bbf;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-loading {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            margin-top: 60px;
+        }
+
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .page-item {
+            margin: 0 5px;
+        }
+
+        .page-link {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+            .page-link:hover {
+                background: #f1f1f1;
+            }
+
+        .page-item.active .page-link {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+        }
+
+        .results-count {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" role="navigation">
+        <a class="navbar-brand" href="#">B2B</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documents</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        <a class="dropdown-item" href="#" onclick="affichercommande();">Commandes vente</a>
+                        <a class="dropdown-item" href="#" onclick="expeditionvente();">Expéditions vente</a>
+                        <a class="dropdown-item" href="#" onclick="facturevente();">Factures vente</a>
+                        <a class="dropdown-item" href="#" onclick="avoirvente();">Avoirs vente</a>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item">
+                            <label style="margin-right: 10px;">
+                                <input type="radio" name="choix" id="devis" value="1"> Devis
+                            </label>
+                        </div>
+                        <div class="dropdown-item">
+                            <label>
+                                <input type="radio" name="choix" id="NVcde" value="0"> Nouvelle commande
+                            </label>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="mytable" href="#" data-toggle="modal" data-target="#panierModal">
+                        <span class="glyphicon glyphicon-shopping-cart badge-success">
+                            <label id="mytable">@Request.Cookies["qtete"].Value</label>
+                        </span>Panier
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="Deconnexion" href="#">Déconnexion</a>
+                </li>
+                <li>
+                    <a class="nav-link">
+                        <div id="famille"></div>
+                    </a>
+                </li>
+            </ul>
+            <a class="navbar-brand" href="#">@Request.Cookies["InfoClient"].Value</a>
+            <div class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Recherche" id="rechercher" aria-label="Search">
+                <a class="btn btn-outline-success my-2 my-sm-0" id="recherche" href="#">Rechercher</a>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <main class="container" style="padding-top:30px;">
+        <div id="paginationTop" class="pagination-container">
+            <nav aria-label="Page navigation">
+                <ul class="pagination" id="paginationControls"></ul>
+            </nav>
+        </div>
+        <div id="resultsCount" class="results-count"></div>
+        <div id="resultsContainer">
+            <div class="product-list" id="productList"></div>
+        </div>
+    </main>
+
+    <div id="result"></div>
+
+    <!-- Modale d'ajout de produit -->
+    <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title custom_align" id="Heading">Ajouter cet article</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- Champs cachés -->
+                    <input id="RefAdd" type="hidden">
+                    <input id="desAdd" type="hidden">
+                    <input id="PrixAdd" type="hidden">
+
+                    <div class="form-group text-center">
+                        <label for="qteAdd">Quantité</label>
+                        <div class="input-group justify-content-center">
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn btn-danger btn-number" onclick="changeQty(-1)">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+                            </div>
+                            <input type="text" id="qteAdd" class="form-control text-center" value="1" min="1" max="100" style="max-width: 80px;">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-success btn-number" onclick="changeQty(1)">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remove"></span> Annuler
+                    </button>
+                    <button type="button" onclick="AddItem()" class="btn btn-success" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-ok-sign"></span> Ajouter au panier
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        function changeQty(delta) {
+            let input = document.getElementById("qteAdd");
+            let value = parseInt(input.value) || 1;
+            let newValue = Math.max(1, Math.min(100, value + delta));
+            input.value = newValue;
+        }
+        let currentPage = 1;
+        const itemsPerPage = 4;
+        let searchResults = [];
+
+        $(document).ready(function () {
+
+            $('#recherche').click(function (e) {
+                e.preventDefault();
+                currentPage = 1;
+                doSearch();
+            });
+
+            $('#rechercher').keypress(function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    currentPage = 1;
+                    doSearch();
+                }
+            });
+
+            function doSearch() {
+                const searchTerm = $('#rechercher').val().trim();
+                const productList = $('#productList');
+                $('#result').html("");
+
+                if (!searchTerm) {
+                    productList.html('<div class="alert alert-info">Veuillez entrer un terme de recherche</div>');
+                    return;
+                }
+
+                productList.html('<div class="text-center"><i class="fas fa-spinner fa-spin fa-2x"></i> Recherche en cours...</div>');
+
+                $.ajax({
+                    url: '/Login/Recherche',
+                    type: 'GET',
+                    data: { id: searchTerm },
+                    success: function (data) {
+                        if (data.error || data.length === 0) {
+                            showNoResults(data.error || 'Aucun résultat trouvé');
+                        } else {
+                            searchResults = Array.isArray(data) ? data : [data];
+                            displayResults();
+                        }
+                    },
+                    error: function () {
+                        showNoResults('Erreur lors de la recherche');
+                    }
+                });
+            }
+
+            function displayResults() {
+                $('#result').html("");
+                const productList = $('#productList');
+                productList.empty();
+
+                if (searchResults.length === 0) {
+                    showNoResults('Aucun résultat');
+                    $('#paginationControls').empty();
+                    return;
+                }
+
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = Math.min(startIndex + itemsPerPage, searchResults.length);
+                const pageItems = searchResults.slice(startIndex, endIndex);
+
+                pageItems.forEach(item => {
+                    const isAvailable = item.Disponible === '1';
+                    productList.append(`
+                                            <div class="product-item">
+                                                <div class="product-image">
+                                                    <img src="(item['N°'] || 'Produit')}" >
+                                                    <span class="product-badge ${isAvailable ? 'bg-success' : 'bg-danger'}">
+                                                        ${isAvailable ? 'Disponible' : 'Rupture'}
+                                                    </span>
+                                                </div>
+                                                <div class="product-content">
+                                                    <div class="product-header">
+                                                        <h3 class="product-title">${item.Description || 'Sans description'}</h3>
+                                                        <div class="product-price">${item['Prix unitaire'] || '0,00'} €</div>
+                                                    </div>
+                                                    <div class="product-meta">
+                                                        <div class="product-ref">Référence: ${item['N°'] || 'N/A'}</div>
+                                                        <div class="product-actions">
+                                                            <button
+                                                                class="btn btn-sm btn-primary open-add-modal"
+                                                                data-toggle="modal"
+                                                                data-target="#Add"
+                                                                data-ref="${item['N°']}"
+                                                                data-desc="${item.Description}"
+                                                                data-price="${item['Prix unitaire']}"
+                                                                ${!isAvailable ? 'disabled' : ''}>
+                                                                <i class="fas fa-cart-plus"></i> Ajouter
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `);
+                });
+
+                updatePagination();
+            }
+
+            function updatePagination() {
+                const totalPages = Math.ceil(searchResults.length / itemsPerPage);
+                const pagination = $('#paginationControls');
+                pagination.empty();
+                $('#result').html("");
+
+                if (totalPages <= 1) return;
+
+                pagination.append(`
+                                        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                                            <a class="page-link" href="#" data-page="${currentPage - 1}">&laquo;</a>
+                                        </li>
+                                    `);
+
+                for (let i = 1; i <= totalPages; i++) {
+                    pagination.append(`
+                                            <li class="page-item ${currentPage === i ? 'active' : ''}">
+                                                <a class="page-link" href="#" data-page="${i}">${i}</a>
+                                            </li>
+                                        `);
+                }
+
+                pagination.append(`
+                                        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                                            <a class="page-link" href="#" data-page="${currentPage + 1}">&raquo;</a>
+                                        </li>
+                                    `);
+
+                $('.page-link').click(function (e) {
+                    e.preventDefault();
+                    const newPage = parseInt($(this).data('page'));
+                    if (newPage !== currentPage && newPage >= 1 && newPage <= totalPages) {
+                        currentPage = newPage;
+                        $('#result').html("");
+                        displayResults();
+                        $('html, body').animate({ scrollTop: 0 }, 'smooth');
+                    }
+                });
+            }
+
+            function showNoResults(message) {
+                $('#result').html("");
+                $('#productList').html(`
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-info-circle"></i> ${message || 'Aucun résultat trouvé'}
+                                        </div>
+                                    `);
+                $('#paginationControls').empty();
+            }
+
+            $(document).on('click', '.open-add-modal', function () {
+                const ref = $(this).data('ref');
+                const desc = $(this).data('desc');
+                let price = $(this).data('price');
+
+                // Formatage du prix si nécessaire
+                if (typeof price === 'string') {
+                    price = price.replace(',', '.');
+                }
+
+                $('#RefAdd').val(ref);
+                $('#desAdd').val(desc);
+                $('#PrixAdd').val(price);
+                $('#qteAdd').val(1); // Réinitialise la quantité à 1
+            });
+        });
+
+
+    </script>
+
+</body>
+</html>
+<script>
+    $(document).on('click', '#Deconnexion', function (e) {
+
+        //window.location.href = '/Login';
+        $.ajax({
+            type: 'POST',
+            url: '../Login/Logout',
+            dataType: 'json',
+            cache: false,
+            success: function (response) {
+                window.location.href = response.Url;
+            },
+            error: function () {
+            }
+        });
+
+    });
+    $(document).on('click', '#devis', function (e) {
+
+        //window.location.href = '/Login';
+        $.ajax({
+            type: 'POST',
+            url: '../Login/DevisCommande',
+            dataType: 'json',
+            cache: false,
+            success: function (response) {
+                window.location.href = response.Url;
+            },
+            error: function () {
+            }
+        });
+
+    });
+    $(document).on('click', '#commande', function (e) {
+
+        //window.location.href = '/Login';
+        $.ajax({
+            type: 'POST',
+            url: '../Login/DevisCommande',
+            dataType: 'json',
+            cache: false,
+            success: function (response) {
+                window.location.href = response.Url;
+            },
+            error: function () {
+            }
+        });
+
+    });
+</script>
+
+<script>
+    function AddItem() {
+        const ref = $('#RefAdd').val().trim();
+        const description = $('#desAdd').val().trim();
+        const prix = $('#PrixAdd').val().replace(',', '.');
+        const quantite = $('#qteAdd').val().trim();
+
+        if (!ref || !description || !prix || !quantite) {
+            showToast('Veuillez remplir tous les champs', 'error');
+            return;
+        }
+
+        if (isNaN(parseFloat(prix)) {
+            showToast('Le prix n\'est pas un nombre valide', 'error');
+            return;
+        }
+
+        if (!/^\d+$/.test(quantite) || parseInt(quantite) <= 0) {
+            showToast('La quantité doit être un nombre entier positif', 'error');
+            return;
+        }
+
+        const dataToSend = {
+            reference: ref,
+            description: description,
+            prix: parseFloat(prix).toFixed(2),
+            quantite: parseInt(quantite)
+        };
+
+        $.ajax({
+            type: 'POST', 
+            url: '../Login/AddToCart',
+            dataType: 'json',
+            data: dataToSend,
+            success: function (response) {
+                if (response && response.Success) {
+                    document.getElementById("result").innerHTML = response.TotalQuantity;
+                    document.getElementById("nbreLignes").innerHTML = response.TotalQuantity;
+
+                    RefreshCartTable(response.CartItems);
+
+                    showToast('Article ajouté au panier', 'success');
+                } else {
+                    showToast(response?.Message || 'Erreur lors de l\'ajout', 'error');
+                }
+            },
+            error: function (xhr) {
+                showToast('Erreur serveur: ' + (xhr.responseJSON?.Message || xhr.statusText), 'error');
+            }
+        });
+    }
+
+    function RefreshCartTable(cartItems) {
+        const tableBody = $('#mytable tbody');
+        tableBody.empty();
+
+        if (cartItems && cartItems.length > 0) {
+            cartItems.forEach(item => {
+                tableBody.append(`
+                <tr>
+                    <td>${item.Reference}</td>
+                    <td>${item.Description}</td>
+                    <td>${item.Prix.toFixed(2)}</td>
+                    <td>${item.Quantite}</td>
+                    <td>${(item.Prix * item.Quantite).toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="RemoveItem('${item.Reference}')">
+                            Supprimer
+                        </button>
+                    </td>
+                </tr>
+            `);
+            });
+        }
+    }
+
+    function RemoveItem(reference) {
+        $.post('../Login/RemoveFromCart', { reference: reference })
+            .done(function (response) {
+                if (response.Success) {
+                    RefreshCartTable(response.CartItems);
+                    document.getElementById("nbreLignes").innerHTML = response.TotalQuantity;
+                    showToast('Article supprimé', 'success');
+                } else {
+                    showToast(response.Message, 'error');
+                }
+            })
+            .fail(function (xhr) {
+                showToast('Erreur: ' + xhr.responseJSON?.Message, 'error');
+            });
+    }
+
+    function showToast(message, type) {
+        const toast = $(`
+    <div class="toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0 position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                ${message}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>`);
+
+        $('body').append(toast);
+        new bootstrap.Toast(toast[0]).show();
+        toast.on('hidden.bs.toast', () => toast.remove());
+    }
+</script>
+
+
+
+
+

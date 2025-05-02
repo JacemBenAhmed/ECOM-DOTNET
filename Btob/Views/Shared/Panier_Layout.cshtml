@@ -1,0 +1,286 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <script src="~/js/jquery.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <!--<script src="~/js/bootstrap.min.js"></script>
+    <link href="~/CSS/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/CSS/bootstrap.css" rel="stylesheet" />
+    <script src="~/js/bootstrap.js"></script>
+    <script src="~/js/bootbox.min.js"></script>-->
+    <link href="~/CSS/bootstrap-glyphicons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="~/js/Script1.js"></script>
+    <script>
+        // afficher panier
+        $(document).on('click', '#panier', function (e) {
+            GetPanier();
+
+        });
+
+    </script>
+    <style>
+        .modal-xl {
+            max-width: 90%; 
+        }
+
+        .modal-lg {
+            max-width: 75%; 
+        }
+
+        .modal-body {
+            max-height: 80vh; 
+            overflow-y: auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="modal fade" id="Print" tabindex="-1" role="dialog" aria-labelledby="printModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="printModalLabel">Impression de commande</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="edit1" tabindex="-1" role="dialog" aria-labelledby="edit1Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="edit1Label">Détails de la Commande</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Numéro</th>
+                                <th>Description</th>
+                                <th>Quantité</th>
+                                <th>Prix</th>
+                                <th>Montant TVA</th>
+                                <th>Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody id="commandeDetailsBody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="edit2" tabindex="-1" role="dialog" aria-labelledby="edit1Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="edit1Label">Détail Expedition </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Numéro</th>
+                                <th>Description</th>
+                                <th>Quantité</th>
+                                <th>Prix</th>
+                                <th>Montant TVA</th>
+                                <th>Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ExpCommande">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="edit3" tabindex="-1" role="dialog" aria-labelledby="edit1Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="edit1Label">Détail Facture </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Numéro</th>
+                                <th>Description</th>
+                                <th>Quantité</th>
+                                <th>Prix</th>
+                                <th>Montant TVA</th>
+                                <th>Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody id="commandeFacture">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="edit4" tabindex="-1" role="dialog" aria-labelledby="edit1Label" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="edit1Label">Détail Avoir ventes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Numéro</th>
+                                <th>Description</th>
+                                <th>Quantité</th>
+                                <th>Prix</th>
+                                <th>Montant TVA</th>
+                                <th>Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody id="avoir">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="body">
+        <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <h4 class="modal-title custom_align" id="Heading">Ajouter</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input class="form-control " id="NL" type="text" placeholder="Mohsin">
+                        </div>
+                        <div class="form-group">
+
+                            <input class="form-control " id="Ref" type="text" placeholder="Irshad">
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="2" class="form-control" id="des" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
+
+
+                        </div>
+                        <div class="form-group">
+
+                            <input id="prix" class="form-control " type="text" placeholder="Irshad">
+                        </div>
+                        <!-- <div class="form-group">-->
+                        <div class="center">
+                            <p>
+
+                            <p>
+                            </p><div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[2]">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </span>
+                                <input type="text" name="quant[2]" class="form-control input-number" id="qte" value="10" min="1" max="100">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </span>
+                            </div>
+                            <p></p>
+                        </div>
+
+                        <!-- </div>-->
+                    </div>
+                    <div class="modal-footer ">
+                        <button type="button" onclick="UpdateItem();" class="btn btn-warning btn-lg" data-dismiss="modal" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Mettre à jour</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+
+
+        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <h4 class="modal-title custom_align" id="Heading">Supprimer cette article</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Êtes-vous sûr de vouloir supprimer cet enregistrement?</div>
+                        <input id="NLDEL" class="form-control " type="text" hidden="hidden" />
+                        <input id="RefDEL" class="form-control " type="text" hidden="hidden" />
+                    </div>
+                    <div class="modal-footer ">
+                        <button type="button" onclick="DeleteItem();" class=" btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok-sign"></span> Oui</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Non</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        
+
+
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+
+
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

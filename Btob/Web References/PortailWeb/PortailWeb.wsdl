@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:tns="urn:microsoft-dynamics-schemas/codeunit/PortailWeb" targetNamespace="urn:microsoft-dynamics-schemas/codeunit/PortailWeb" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <schema xmlns:tns="urn:microsoft-dynamics-nav/xmlports/x50107" elementFormDefault="qualified" targetNamespace="urn:microsoft-dynamics-nav/xmlports/x50107" xmlns="http://www.w3.org/2001/XMLSchema">
+      <complexType name="SalesCrMemoLine">
+        <sequence>
+          <element minOccurs="1" maxOccurs="1" name="No" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="Description" type="string" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="Quantity" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="Amount" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="AmountIncludingVAT" type="decimal" />
+        </sequence>
+      </complexType>
+      <complexType name="SalesCrMemoLines" mixed="true">
+        <sequence>
+          <element minOccurs="1" maxOccurs="unbounded" name="SalesCrMemoLine" type="tns:SalesCrMemoLine" />
+        </sequence>
+      </complexType>
+      <element name="SalesCrMemoLines" type="tns:SalesCrMemoLines" />
+    </schema>
+    <schema xmlns:tns="urn:microsoft-dynamics-nav/xmlports/x50105" elementFormDefault="qualified" targetNamespace="urn:microsoft-dynamics-nav/xmlports/x50105" xmlns="http://www.w3.org/2001/XMLSchema">
+      <complexType name="SalesCrMemoHeader">
+        <sequence>
+          <element minOccurs="1" maxOccurs="1" name="No" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="SelltoCustomerNo" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="SelltoCustomerName" type="string" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="Amount" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="AmountIncludingVAT" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0001-01-01" name="PostingDate" type="date" />
+        </sequence>
+      </complexType>
+      <complexType name="SalesCrMemoHeaders" mixed="true">
+        <sequence>
+          <element minOccurs="1" maxOccurs="unbounded" name="SalesCrMemoHeader" type="tns:SalesCrMemoHeader" />
+        </sequence>
+      </complexType>
+      <element name="SalesCrMemoHeaders" type="tns:SalesCrMemoHeaders" />
+    </schema>
+    <schema xmlns:tns="urn:microsoft-dynamics-nav/xmlports/x50106" elementFormDefault="qualified" targetNamespace="urn:microsoft-dynamics-nav/xmlports/x50106" xmlns="http://www.w3.org/2001/XMLSchema">
+      <complexType name="SalesInvoiceLine">
+        <sequence>
+          <element minOccurs="1" maxOccurs="1" name="No" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="Description" type="string" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="Quantity" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="Amount" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="AmountIncludingVAT" type="decimal" />
+        </sequence>
+      </complexType>
+      <complexType name="SalesInvoiceLines" mixed="true">
+        <sequence>
+          <element minOccurs="1" maxOccurs="unbounded" name="SalesInvoiceLine" type="tns:SalesInvoiceLine" />
+        </sequence>
+      </complexType>
+      <element name="SalesInvoiceLines" type="tns:SalesInvoiceLines" />
+    </schema>
+    <schema xmlns:tns="urn:microsoft-dynamics-nav/xmlports/x50104" elementFormDefault="qualified" targetNamespace="urn:microsoft-dynamics-nav/xmlports/x50104" xmlns="http://www.w3.org/2001/XMLSchema">
+      <complexType name="SalesInvoiceHeader">
+        <sequence>
+          <element minOccurs="1" maxOccurs="1" name="No" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="SelltoCustomerNo" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="SelltoCustomerName" type="string" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="Amount" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="AmountIncludingVAT" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0001-01-01" name="PostingDate" type="date" />
+        </sequence>
+      </complexType>
+      <complexType name="SalesInvoiceHeaders" mixed="true">
+        <sequence>
+          <element minOccurs="1" maxOccurs="unbounded" name="SalesInvoiceHeader" type="tns:SalesInvoiceHeader" />
+        </sequence>
+      </complexType>
+      <element name="SalesInvoiceHeaders" type="tns:SalesInvoiceHeaders" />
+    </schema>
+    <schema xmlns:tns="urn:microsoft-dynamics-nav/xmlports/x50100" elementFormDefault="qualified" targetNamespace="urn:microsoft-dynamics-nav/xmlports/x50100" xmlns="http://www.w3.org/2001/XMLSchema">
+      <complexType name="SalesHeader">
+        <sequence>
+          <element minOccurs="1" maxOccurs="1" name="No" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="SelltoCustomerNo" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="SelltoCustomerName" type="string" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="Amount" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="AmountIncludingVAT" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0001-01-01" name="PostingDate" type="date" />
+        </sequence>
+      </complexType>
+      <complexType name="SalesHeaders" mixed="true">
+        <sequence>
+          <element minOccurs="1" maxOccurs="unbounded" name="SalesHeader" type="tns:SalesHeader" />
+        </sequence>
+      </complexType>
+      <element name="SalesHeaders" type="tns:SalesHeaders" />
+    </schema>
+    <schema xmlns:tns="urn:microsoft-dynamics-nav/xmlports/x50101" elementFormDefault="qualified" targetNamespace="urn:microsoft-dynamics-nav/xmlports/x50101" xmlns="http://www.w3.org/2001/XMLSchema">
+      <complexType name="SalesLine">
+        <sequence>
+          <element minOccurs="1" maxOccurs="1" name="No" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="Description" type="string" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="Quantity" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="UnitPrice" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="Amount" type="decimal" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="AmountIncludingVAT" type="decimal" />
+        </sequence>
+      </complexType>
+      <complexType name="SalesLines" mixed="true">
+        <sequence>
+          <element minOccurs="1" maxOccurs="unbounded" name="SalesLine" type="tns:SalesLine" />
+        </sequence>
+      </complexType>
+      <element name="SalesLines" type="tns:SalesLines" />
+    </schema>
+    <schema xmlns:tns="urn:microsoft-dynamics-nav/xmlports/x50103" elementFormDefault="qualified" targetNamespace="urn:microsoft-dynamics-nav/xmlports/x50103" xmlns="http://www.w3.org/2001/XMLSchema">
+      <complexType name="SalesShipmentLine">
+        <sequence>
+          <element minOccurs="1" maxOccurs="1" name="No" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="Description" type="string" />
+          <element minOccurs="1" maxOccurs="1" default="0" name="Quantity" type="decimal" />
+        </sequence>
+      </complexType>
+      <complexType name="SalesShipementLines" mixed="true">
+        <sequence>
+          <element minOccurs="1" maxOccurs="unbounded" name="SalesShipmentLine" type="tns:SalesShipmentLine" />
+        </sequence>
+      </complexType>
+      <element name="SalesShipementLines" type="tns:SalesShipementLines" />
+    </schema>
+    <schema xmlns:tns="urn:microsoft-dynamics-nav/xmlports/x50102" elementFormDefault="qualified" targetNamespace="urn:microsoft-dynamics-nav/xmlports/x50102" xmlns="http://www.w3.org/2001/XMLSchema">
+      <complexType name="SalesShipmentHeader">
+        <sequence>
+          <element minOccurs="1" maxOccurs="1" name="No" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="SelltoCustomerNo" type="string" />
+          <element minOccurs="1" maxOccurs="1" name="SelltoCustomerName" type="string" />
+          <element minOccurs="1" maxOccurs="1" default="0001-01-01" name="PostingDate" type="date" />
+        </sequence>
+      </complexType>
+      <complexType name="SalesShipmentHeaders" mixed="true">
+        <sequence>
+          <element minOccurs="1" maxOccurs="unbounded" name="SalesShipmentHeader" type="tns:SalesShipmentHeader" />
+        </sequence>
+      </complexType>
+      <element name="SalesShipmentHeaders" type="tns:SalesShipmentHeaders" />
+    </schema>
+    <schema elementFormDefault="qualified" targetNamespace="urn:microsoft-dynamics-schemas/codeunit/PortailWeb" xmlns="http://www.w3.org/2001/XMLSchema">
+      <element name="ExportAvoirLine">
+        <complexType>
+          <sequence>
+            <element xmlns:q1="urn:microsoft-dynamics-nav/xmlports/x50107" minOccurs="1" maxOccurs="1" name="avoirLines" type="q1:SalesCrMemoLines" />
+            <element minOccurs="1" maxOccurs="1" name="orderFilter" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportAvoirLine_Result">
+        <complexType>
+          <sequence>
+            <element xmlns:q2="urn:microsoft-dynamics-nav/xmlports/x50107" minOccurs="1" maxOccurs="1" name="avoirLines" type="q2:SalesCrMemoLines" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportAvoir">
+        <complexType>
+          <sequence>
+            <element xmlns:q3="urn:microsoft-dynamics-nav/xmlports/x50105" minOccurs="1" maxOccurs="1" name="avoir" type="q3:SalesCrMemoHeaders" />
+            <element minOccurs="1" maxOccurs="1" name="custFilter" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="avr" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportAvoir_Result">
+        <complexType>
+          <sequence>
+            <element xmlns:q4="urn:microsoft-dynamics-nav/xmlports/x50105" minOccurs="1" maxOccurs="1" name="avoir" type="q4:SalesCrMemoHeaders" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportInvoiceLine">
+        <complexType>
+          <sequence>
+            <element xmlns:q5="urn:microsoft-dynamics-nav/xmlports/x50106" minOccurs="1" maxOccurs="1" name="invoiceLines" type="q5:SalesInvoiceLines" />
+            <element minOccurs="1" maxOccurs="1" name="orderFilter" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportInvoiceLine_Result">
+        <complexType>
+          <sequence>
+            <element xmlns:q6="urn:microsoft-dynamics-nav/xmlports/x50106" minOccurs="1" maxOccurs="1" name="invoiceLines" type="q6:SalesInvoiceLines" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportInvoice">
+        <complexType>
+          <sequence>
+            <element xmlns:q7="urn:microsoft-dynamics-nav/xmlports/x50104" minOccurs="1" maxOccurs="1" name="invoice" type="q7:SalesInvoiceHeaders" />
+            <element minOccurs="1" maxOccurs="1" name="custFilter" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="inv" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportInvoice_Result">
+        <complexType>
+          <sequence>
+            <element xmlns:q8="urn:microsoft-dynamics-nav/xmlports/x50104" minOccurs="1" maxOccurs="1" name="invoice" type="q8:SalesInvoiceHeaders" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportItems">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="desc" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="varJSON" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportItems_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="varJSON" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportOrderHeader">
+        <complexType>
+          <sequence>
+            <element xmlns:q9="urn:microsoft-dynamics-nav/xmlports/x50100" minOccurs="1" maxOccurs="1" name="orderHeader" type="q9:SalesHeaders" />
+            <element minOccurs="1" maxOccurs="1" name="custFilter" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="itemFilter" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportOrderHeader_Result">
+        <complexType>
+          <sequence>
+            <element xmlns:q10="urn:microsoft-dynamics-nav/xmlports/x50100" minOccurs="1" maxOccurs="1" name="orderHeader" type="q10:SalesHeaders" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportOrderLine">
+        <complexType>
+          <sequence>
+            <element xmlns:q11="urn:microsoft-dynamics-nav/xmlports/x50101" minOccurs="1" maxOccurs="1" name="orderLines" type="q11:SalesLines" />
+            <element minOccurs="1" maxOccurs="1" name="orderFilter" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportOrderLine_Result">
+        <complexType>
+          <sequence>
+            <element xmlns:q12="urn:microsoft-dynamics-nav/xmlports/x50101" minOccurs="1" maxOccurs="1" name="orderLines" type="q12:SalesLines" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportPictureToBase64">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="iMG" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="itemNo" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportPictureToBase64_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="iMG" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportShipementLine">
+        <complexType>
+          <sequence>
+            <element xmlns:q13="urn:microsoft-dynamics-nav/xmlports/x50103" minOccurs="1" maxOccurs="1" name="shipementLines" type="q13:SalesShipementLines" />
+            <element minOccurs="1" maxOccurs="1" name="orderFilter" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportShipementLine_Result">
+        <complexType>
+          <sequence>
+            <element xmlns:q14="urn:microsoft-dynamics-nav/xmlports/x50103" minOccurs="1" maxOccurs="1" name="shipementLines" type="q14:SalesShipementLines" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportShipmentHeader">
+        <complexType>
+          <sequence>
+            <element xmlns:q15="urn:microsoft-dynamics-nav/xmlports/x50102" minOccurs="1" maxOccurs="1" name="shipmentList" type="q15:SalesShipmentHeaders" />
+            <element minOccurs="1" maxOccurs="1" name="custFilter" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="itemFilter" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ExportShipmentHeader_Result">
+        <complexType>
+          <sequence>
+            <element xmlns:q16="urn:microsoft-dynamics-nav/xmlports/x50102" minOccurs="1" maxOccurs="1" name="shipmentList" type="q16:SalesShipmentHeaders" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ReportToPDF">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="pDF" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="executed" type="boolean" />
+            <element minOccurs="1" maxOccurs="1" name="idReport" type="int" />
+            <element minOccurs="1" maxOccurs="1" name="document" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="ReportToPDF_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="pDF" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="executed" type="boolean" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="login">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="user" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="pwd" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="customerNo" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="description" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="solde" type="decimal" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="login_Result">
+        <complexType>
+          <sequence>
+            <element minOccurs="1" maxOccurs="1" name="return_value" type="boolean" />
+            <element minOccurs="1" maxOccurs="1" name="customerNo" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="description" type="string" />
+            <element minOccurs="1" maxOccurs="1" name="solde" type="decimal" />
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <message name="ExportAvoirLine">
+    <part name="parameters" element="tns:ExportAvoirLine" />
+  </message>
+  <message name="ExportAvoirLine_Result">
+    <part name="parameters" element="tns:ExportAvoirLine_Result" />
+  </message>
+  <message name="ExportAvoir">
+    <part name="parameters" element="tns:ExportAvoir" />
+  </message>
+  <message name="ExportAvoir_Result">
+    <part name="parameters" element="tns:ExportAvoir_Result" />
+  </message>
+  <message name="ExportInvoiceLine">
+    <part name="parameters" element="tns:ExportInvoiceLine" />
+  </message>
+  <message name="ExportInvoiceLine_Result">
+    <part name="parameters" element="tns:ExportInvoiceLine_Result" />
+  </message>
+  <message name="ExportInvoice">
+    <part name="parameters" element="tns:ExportInvoice" />
+  </message>
+  <message name="ExportInvoice_Result">
+    <part name="parameters" element="tns:ExportInvoice_Result" />
+  </message>
+  <message name="ExportItems">
+    <part name="parameters" element="tns:ExportItems" />
+  </message>
+  <message name="ExportItems_Result">
+    <part name="parameters" element="tns:ExportItems_Result" />
+  </message>
+  <message name="ExportOrderHeader">
+    <part name="parameters" element="tns:ExportOrderHeader" />
+  </message>
+  <message name="ExportOrderHeader_Result">
+    <part name="parameters" element="tns:ExportOrderHeader_Result" />
+  </message>
+  <message name="ExportOrderLine">
+    <part name="parameters" element="tns:ExportOrderLine" />
+  </message>
+  <message name="ExportOrderLine_Result">
+    <part name="parameters" element="tns:ExportOrderLine_Result" />
+  </message>
+  <message name="ExportPictureToBase64">
+    <part name="parameters" element="tns:ExportPictureToBase64" />
+  </message>
+  <message name="ExportPictureToBase64_Result">
+    <part name="parameters" element="tns:ExportPictureToBase64_Result" />
+  </message>
+  <message name="ExportShipementLine">
+    <part name="parameters" element="tns:ExportShipementLine" />
+  </message>
+  <message name="ExportShipementLine_Result">
+    <part name="parameters" element="tns:ExportShipementLine_Result" />
+  </message>
+  <message name="ExportShipmentHeader">
+    <part name="parameters" element="tns:ExportShipmentHeader" />
+  </message>
+  <message name="ExportShipmentHeader_Result">
+    <part name="parameters" element="tns:ExportShipmentHeader_Result" />
+  </message>
+  <message name="ReportToPDF">
+    <part name="parameters" element="tns:ReportToPDF" />
+  </message>
+  <message name="ReportToPDF_Result">
+    <part name="parameters" element="tns:ReportToPDF_Result" />
+  </message>
+  <message name="login">
+    <part name="parameters" element="tns:login" />
+  </message>
+  <message name="login_Result">
+    <part name="parameters" element="tns:login_Result" />
+  </message>
+  <portType name="PortailWeb_Port">
+    <operation name="ExportAvoirLine">
+      <input name="ExportAvoirLine" message="tns:ExportAvoirLine" />
+      <output name="ExportAvoirLine_Result" message="tns:ExportAvoirLine_Result" />
+    </operation>
+    <operation name="ExportAvoir">
+      <input name="ExportAvoir" message="tns:ExportAvoir" />
+      <output name="ExportAvoir_Result" message="tns:ExportAvoir_Result" />
+    </operation>
+    <operation name="ExportInvoiceLine">
+      <input name="ExportInvoiceLine" message="tns:ExportInvoiceLine" />
+      <output name="ExportInvoiceLine_Result" message="tns:ExportInvoiceLine_Result" />
+    </operation>
+    <operation name="ExportInvoice">
+      <input name="ExportInvoice" message="tns:ExportInvoice" />
+      <output name="ExportInvoice_Result" message="tns:ExportInvoice_Result" />
+    </operation>
+    <operation name="ExportItems">
+      <input name="ExportItems" message="tns:ExportItems" />
+      <output name="ExportItems_Result" message="tns:ExportItems_Result" />
+    </operation>
+    <operation name="ExportOrderHeader">
+      <input name="ExportOrderHeader" message="tns:ExportOrderHeader" />
+      <output name="ExportOrderHeader_Result" message="tns:ExportOrderHeader_Result" />
+    </operation>
+    <operation name="ExportOrderLine">
+      <input name="ExportOrderLine" message="tns:ExportOrderLine" />
+      <output name="ExportOrderLine_Result" message="tns:ExportOrderLine_Result" />
+    </operation>
+    <operation name="ExportPictureToBase64">
+      <input name="ExportPictureToBase64" message="tns:ExportPictureToBase64" />
+      <output name="ExportPictureToBase64_Result" message="tns:ExportPictureToBase64_Result" />
+    </operation>
+    <operation name="ExportShipementLine">
+      <input name="ExportShipementLine" message="tns:ExportShipementLine" />
+      <output name="ExportShipementLine_Result" message="tns:ExportShipementLine_Result" />
+    </operation>
+    <operation name="ExportShipmentHeader">
+      <input name="ExportShipmentHeader" message="tns:ExportShipmentHeader" />
+      <output name="ExportShipmentHeader_Result" message="tns:ExportShipmentHeader_Result" />
+    </operation>
+    <operation name="ReportToPDF">
+      <input name="ReportToPDF" message="tns:ReportToPDF" />
+      <output name="ReportToPDF_Result" message="tns:ReportToPDF_Result" />
+    </operation>
+    <operation name="login">
+      <input name="login" message="tns:login" />
+      <output name="login_Result" message="tns:login_Result" />
+    </operation>
+  </portType>
+  <binding name="PortailWeb_Binding" type="tns:PortailWeb_Port">
+    <binding transport="http://schemas.xmlsoap.org/soap/http" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    <operation name="ExportAvoirLine">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ExportAvoirLine" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ExportAvoirLine">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ExportAvoirLine_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ExportAvoir">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ExportAvoir" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ExportAvoir">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ExportAvoir_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ExportInvoiceLine">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ExportInvoiceLine" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ExportInvoiceLine">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ExportInvoiceLine_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ExportInvoice">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ExportInvoice" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ExportInvoice">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ExportInvoice_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ExportItems">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ExportItems" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ExportItems">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ExportItems_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ExportOrderHeader">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ExportOrderHeader" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ExportOrderHeader">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ExportOrderHeader_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ExportOrderLine">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ExportOrderLine" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ExportOrderLine">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ExportOrderLine_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ExportPictureToBase64">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ExportPictureToBase64" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ExportPictureToBase64">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ExportPictureToBase64_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ExportShipementLine">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ExportShipementLine" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ExportShipementLine">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ExportShipementLine_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ExportShipmentHeader">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ExportShipmentHeader" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ExportShipmentHeader">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ExportShipmentHeader_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="ReportToPDF">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:ReportToPDF" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="ReportToPDF">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="ReportToPDF_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+    <operation name="login">
+      <operation soapAction="urn:microsoft-dynamics-schemas/codeunit/PortailWeb:login" style="document" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <input name="login">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </input>
+      <output name="login_Result">
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </output>
+    </operation>
+  </binding>
+  <service name="PortailWeb">
+    <port name="PortailWeb_Port" binding="tns:PortailWeb_Binding">
+      <address location="http://desktop-47nbubl:7047/BC252/WS/CRONUS%20France%20S.A./Codeunit/PortailWeb" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    </port>
+  </service>
+</definitions>
