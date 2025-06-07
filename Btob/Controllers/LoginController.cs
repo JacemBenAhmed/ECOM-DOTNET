@@ -135,46 +135,25 @@ namespace Btob.Controllers
         [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult Index()
         {
-            try
-            {
-                if (Session["msgErreur"] != null)
-                    Response.Cookies["msgErreur"].Value = Session["msgErreur"].ToString();
-                else
-                    Response.Cookies["msgErreur"].Value = "";
-            }
-            catch { }
+            if (Session["msgErreur"] != null)
+                Response.Cookies["msgErreur"].Value = Session["msgErreur"].ToString();
+            else
+                Response.Cookies["msgErreur"].Value = "";
 
             return View();
-
         }
         [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult Accueil()
         {
-
             if (Session["nom"] != null)
             {
-                // Session["qte"] = "1";
-                //  ViewBag.totalrecord = Session["qte"];
                 ViewBag.nom = Session["nom"].ToString();
                 Response.Cookies["InfoClient"].Value = Session["nom"].ToString();
-                Response.Cookies["qtete"].Value = "0";// Session["qte"].ToString();
-
-                GetTree();
+                Response.Cookies["qtete"].Value = "0";
                 return View();
             }
-            else
-            {
-                Response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(-1));
-                Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
-                Response.Cache.SetNoStore();
-                Session.Abandon();
-
-                FormsAuthentication.SignOut();
-                //   System.Net.AuthenticationManager.Aut();
-
-                return RedirectToAction("Index", "Login");
-            }
-
+            
+            return RedirectToAction("Index", "Login");
         }
         public ActionResult Panier()
         {
@@ -186,35 +165,16 @@ namespace Btob.Controllers
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public ActionResult VerifLogin(string login, string password)
         {
-            string re = "";
-            re = "false";
             Sales.Service_RC service = new Sales.Service_RC();
-            DataTable log = new DataTable();
-            log = service.LoginBtob(login, password);
+            DataTable log = service.LoginBtob(login, password);
+            
             if (log.Rows.Count > 0)
             {
-                foreach (DataRow row in log.Rows)
-                {
-                    //  foreach (DataColumn column in dt.Columns)
-                    {
-                        Session["nom"] = "Bienvenue " + row[2] + " .  ";
-                        re = "true";
-                    }
-                }
+                Session["nom"] = "Bienvenue " + log.Rows[0][2] + " .  ";
+                return Json(new { success = true });
             }
-
-            string result = "";
-            JavaScriptSerializer jss = new JavaScriptSerializer();
-            result = JsonConvert.SerializeObject(re, Newtonsoft.Json.Formatting.Indented);
-            Response.Clear();
-            Response.ContentType = "application/json";
-
-            ViewBag.nom = login;
-            Response.Write(result);
-            Response.Flush();
-
-            return new EmptyResult();
-
+            
+            return Json(new { success = false });
         }
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public ActionResult GetItem(string Id)
@@ -351,68 +311,36 @@ namespace Btob.Controllers
 
         }
         //*********************LOGOUT*****************************
-        [OutputCacheAttribute(VaryByParam = "*", Duration = 0, NoStore = true)]
+        [OutputCache(VaryByParam = "*", Duration = 0, NoStore = true)]
         public ActionResult Logout()
         {
-            //Session.Remove("id");
-
             Response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(-1));
-            Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.Cache.SetNoStore();
             Session.Abandon();
-
             FormsAuthentication.SignOut();
-            //AuthenticationManager.SignOut();
-            var redirectUrl = new UrlHelper(Request.RequestContext).Action("Index", "Login");
-
-            return Json(new { Url = redirectUrl }); ;
+            
+            return RedirectToAction("Index", "Login");
         }
         //< Business central
         [HttpPost]
         public ActionResult Logpost(LogOnModel person)
         {
-            string UserName = person.UserName;
-            string Password = person.Password;
-            string specifier;
-            CultureInfo culture;
-            PortailWeb.PortailWeb p = new PortailWeb.PortailWeb();
-            p.UseDefaultCredentials = true;
-            p.Credentials = new System.Net.NetworkCredential("Yahya", "147096", "desktop-47nbubl");//app.config
-            string desc = "";
-            decimal solde = 0;
-            string codeclient = "";
-            specifier = "N";
-            culture = CultureInfo.CreateSpecificCulture("fr-CA");
-            if (p.login(UserName, Password, ref codeclient, ref desc, ref solde))
+            if (ModelState.IsValid)
             {
-                Session["nom"] = $"{desc} {solde.ToString(specifier, culture)}";
-                Session["CodeClient"] = codeclient;
-                return RedirectToAction("Accueil", "Login");
+                Sales.Service_RC service = new Sales.Service_RC();
+                DataTable log = service.LoginBtob(person.UserName, person.Password);
+                
+                if (log.Rows.Count > 0)
+                {
+                    Session["nom"] = "Bienvenue " + log.Rows[0][2] + " .  ";
+                    return RedirectToAction("Accueil", "Login");
+                }
+                
+                Session["msgErreur"] = "Login ou mot de passe incorrect";
             }
-            else
-            {
-
-                // Session["msgErreur"] = desc;
-                //Response.Cookies["msgErreur"].Value = desc;
-                return RedirectToAction("Index", "Login");
-
-
-                /* Sales.Service_RC service = new Sales.Service_RC();
-                 DataTable log = new DataTable();
-                 log = service.LoginBtob(UserName, Password);
-                 if (log.Rows.Count > 0)
-                 {
-                     foreach (DataRow row in log.Rows)
-                     {
-                         //  foreach (DataColumn column in dt.Columns)
-                         {
-                             Session["nom"] = "Bienvenue " + row[2] + " .  ";
-                             return RedirectToAction("Accueil", "Login");
-                         }
-                     }
-                 }*/
-                return View();
-            }
+            
+            return RedirectToAction("Index", "Login");
         }
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public ActionResult affichercommande()
